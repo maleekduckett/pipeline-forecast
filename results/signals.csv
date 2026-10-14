@@ -1,0 +1,11 @@
+signal,name,value,shown,status,means
+coverage,Coverage this quarter,4.832914870434412,4.8x,green,$10.2M of pipeline dated this quarter against $2.1M of quota still to close. The usual target is 3x.
+growth_coverage,Coverage to match last quarter,1.2739828667049626,1.3x,red,Matching last quarter's $9.8M means closing $8.0M more. There's $10.2M dated this quarter to do it with.
+next_q_coverage,Coverage next quarter,2.4043037974683545,2.4x,green,"$9.5M is dated for next quarter against $4.0M of quota. Early in a quarter, 2x for the next one is healthy."
+creation,New pipeline created,1.0658519805805617,+7%,green,$32.7M created in the last 90 days vs $30.7M in the 90 before. Pipeline built now is next quarter's bookings.
+aging,Deals stuck in stage,0.338910544444287,34%,amber,128 open deals ($12.0M) have sat in their stage longer than 3 in 4 winning deals in the same segment did.
+past_due,Close date already passed,0.39376036513628826,39%,red,99 open deals ($13.9M) have a close date before this quarter. They can't be forecast until a rep re-dates them.
+orphaned,Owned by reps who left,0.0,0%,green,No open deals belong to the two reps who left. Their deals were reassigned.
+slipped,Deals pushed at least once,0.22033898305084745,22%,green,91 of 413 open deals have been pushed. Pushed deals have won 45% of the time vs 34% for the rest.
+concentration,Top 5 deals' share,0.2008469093689349,20%,green,"The 5 biggest deals dated this quarter are 20% of its pipeline. Above a third, one loss moves the number a lot."
+win_rate,Win rate trend,0.029034597812689134,+2.9 pts,green,37% of deals won in the last two quarters vs 34% in the two before.

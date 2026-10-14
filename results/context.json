@@ -1,0 +1,27 @@
+{
+  "quarter":"2026Q4",
+  "quota":3950000.0,
+  "won_so_far":1839100.0,
+  "pipeline_in_quarter":10201800.0,
+  "last_quarter_actual":9846900.0,
+  "open_pipeline":35274500.0,
+  "open_deals":413,
+  "past_due_amount":13889700.0,
+  "stage_limit_days":{
+    "('Enterprise', 'Contract Review')":39.0,
+    "('Enterprise', 'Discovery')":34.0,
+    "('Enterprise', 'Negotiation')":26.0,
+    "('Enterprise', 'Proposal Sent')":28.0,
+    "('Enterprise', 'Prospecting')":37.0,
+    "('Mid-Market', 'Contract Review')":20.0,
+    "('Mid-Market', 'Discovery')":18.0,
+    "('Mid-Market', 'Negotiation')":16.0,
+    "('Mid-Market', 'Proposal Sent')":17.0,
+    "('Mid-Market', 'Prospecting')":21.0,
+    "('SMB', 'Contract Review')":10.0,
+    "('SMB', 'Discovery')":7.0,
+    "('SMB', 'Negotiation')":7.0,
+    "('SMB', 'Proposal Sent')":8.0,
+    "('SMB', 'Prospecting')":9.0
+  }
+}

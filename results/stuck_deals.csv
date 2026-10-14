@@ -1,0 +1,129 @@
+opportunity_id,stage,days,limit,name,owner_id,amount,close_date,segment
+O-01025,Contract Review,68,38.75,Swift Glacier Films - Expansion,U-019,31000.0,2026-06-19,Enterprise
+O-01137,Contract Review,78,38.75,Taylor Maple - New Business,U-019,150000.0,2026-08-19,Enterprise
+O-01261,Contract Review,34,20.0,Dune Trail - New Business,U-012,60000.0,2026-07-03,Mid-Market
+O-01359,Contract Review,73,38.75,Northern Canyon - New Business,U-021,237000.0,2026-08-23,Enterprise
+O-01424,Negotiation,38,26.25,Amber Pine - New Business,U-019,219000.0,2026-06-12,Enterprise
+O-01429,Contract Review,100,20.0,Bright Trail Capital - New Business,U-019,173000.0,2026-09-12,Mid-Market
+O-01468,Contract Review,30,10.0,Sharp Brook - New Business,U-020,233000.0,2026-07-07,SMB
+O-01486,Contract Review,34,20.0,Wild Bell Supply - Renewal,U-012,102000.0,2026-05-23,Mid-Market
+O-01505,Contract Review,26,20.0,Martin Sage - Renewal,U-012,37000.0,2026-08-19,Mid-Market
+O-01576,Negotiation,64,26.25,Redcrest Insurance - New Business,U-019,97000.0,2026-07-28,Enterprise
+O-01618,Contract Review,42,38.75,Harper & Johnson - New Business,U-019,600000.0,2026-08-20,Enterprise
+O-01658,Contract Review,59,38.75,Juniper Dune Foods - New Business,U-019,203000.0,2026-08-25,Enterprise
+O-01694,Negotiation,30,16.25,Grand Orchard Therapeutics - New Business,U-019,154000.0,2026-07-12,Mid-Market
+O-01704,Negotiation,36,26.25,Silver Key Systems - New Business,U-019,247000.0,2026-08-12,Enterprise
+O-01706,Contract Review,57,38.75,Simmons Valley - Expansion,U-021,64000.0,2026-08-13,Enterprise
+O-01708,Negotiation,72,26.25,Pulse Mind - New Business,U-021,149000.0,2026-07-12,Enterprise
+O-01731,Contract Review,63,38.75,Fair Bear - Expansion,U-021,97000.0,2026-07-07,Enterprise
+O-01733,Negotiation,22,16.25,Robinson & Sanders Plastics - Expansion,U-019,319000.0,2026-05-31,Mid-Market
+O-01735,Negotiation,33,26.25,Cosmic Heron Digital - Renewal,U-021,177000.0,2026-05-31,Enterprise
+O-01773,Negotiation,52,26.25,Neon Hub - New Business,U-022,135000.0,2026-06-09,Enterprise
+O-01774,Contract Review,49,38.75,Kim & Abbott Industries - New Business,U-022,396000.0,2026-06-06,Enterprise
+O-01796,Proposal Sent,66,28.25,Orbit Wave - Expansion,U-019,68000.0,2026-06-10,Enterprise
+O-01815,Contract Review,51,20.0,Gupta Brook - New Business,U-016,56000.0,2026-07-15,Mid-Market
+O-01822,Negotiation,47,26.25,Southern Juniper Digital - New Business,U-019,161000.0,2026-07-16,Enterprise
+O-01835,Proposal Sent,29,28.25,Anderson & Brooks - New Business,U-021,177000.0,2026-06-21,Enterprise
+O-01840,Negotiation,40,16.25,Calm Isle Advisors - New Business,U-016,47000.0,2026-06-17,Mid-Market
+O-01853,Proposal Sent,46,28.25,Silva Hawk Steel - New Business,U-019,390000.0,2026-06-23,Enterprise
+O-01884,Negotiation,63,16.25,Goldview Platform - New Business,U-015,40000.0,2026-07-14,Mid-Market
+O-01913,Negotiation,24,16.25,Magnolia Summit - New Business,U-013,51000.0,2026-06-28,Mid-Market
+O-01921,Proposal Sent,57,28.25,Sunny Falcon Renewables - New Business,U-019,135000.0,2026-08-20,Enterprise
+O-01932,Contract Review,34,20.0,Ember Lake - New Business,U-012,30000.0,2026-07-21,Mid-Market
+O-01934,Negotiation,40,26.25,Red Spark Tooling - New Business,U-022,119000.0,2026-09-06,Enterprise
+O-01937,Negotiation,84,16.25,Highview Plastics - New Business,U-013,71000.0,2026-08-21,Mid-Market
+O-01944,Negotiation,44,16.25,Kim & Chang - New Business,U-014,48000.0,2026-08-26,Mid-Market
+O-01954,Proposal Sent,29,28.25,Swift Compass - Expansion,U-019,39000.0,2026-07-04,Enterprise
+O-01968,Proposal Sent,38,28.25,Singh Otter - New Business,U-019,301000.0,2026-07-06,Enterprise
+O-01972,Proposal Sent,44,28.25,Reyes Bay Health - New Business,U-021,148000.0,2026-07-07,Enterprise
+O-01974,Contract Review,16,10.0,Bailey & Nguyen Insurance - New Business,U-012,35000.0,2026-09-08,SMB
+O-01975,Proposal Sent,54,28.25,Delta Loop - New Business,U-019,186000.0,2026-07-31,Enterprise
+O-02008,Contract Review,12,10.0,Rustic Sage Home - Renewal,U-006,8300.0,2026-07-13,SMB
+O-02019,Contract Review,23,20.0,Flores Bay - New Business,U-012,51000.0,2026-07-14,Mid-Market
+O-02050,Negotiation,54,26.25,Bright Bell Bank - New Business,U-022,828000.0,2026-07-28,Enterprise
+O-02067,Negotiation,32,16.25,Fox Cloud Steel - New Business,U-015,63000.0,2026-08-01,Mid-Market
+O-02069,Contract Review,28,20.0,Dune Lake Home - Expansion,U-012,20000.0,2026-07-22,Mid-Market
+O-02089,Negotiation,38,26.25,Lumen Nest - New Business,U-021,386000.0,2026-09-02,Enterprise
+O-02091,Negotiation,48,16.25,Bay Hawk Studios - Expansion,U-012,27000.0,2026-07-26,Mid-Market
+O-02102,Negotiation,32,16.25,Calm Bridge - New Business,U-021,258000.0,2026-07-27,Mid-Market
+O-02109,Negotiation,30,26.25,Ellis & Reed Apps - New Business,U-019,81000.0,2026-09-06,Enterprise
+O-02128,Negotiation,44,16.25,Hillleaf Plastics - New Business,U-015,85000.0,2026-07-30,Mid-Market
+O-02132,Contract Review,42,20.0,Pinehaven - New Business,U-014,37000.0,2026-08-05,Mid-Market
+O-02146,Contract Review,27,20.0,Taylor & Webb Associates - New Business,U-012,38000.0,2026-08-01,Mid-Market
+O-02151,Negotiation,33,16.25,Lucky Water - New Business,U-014,27000.0,2026-08-01,Mid-Market
+O-02165,Negotiation,64,16.25,Schmidt Magnolia Law - New Business,U-012,35000.0,2026-08-22,Mid-Market
+O-02175,Contract Review,23,20.0,Clever Lighthouse Law - Renewal,U-016,148000.0,2026-08-04,Mid-Market
+O-02191,Contract Review,27,20.0,Misty Badger Labs - New Business,U-012,18000.0,2026-09-04,Mid-Market
+O-02202,Contract Review,38,20.0,Western Fox - New Business,U-014,55000.0,2026-08-07,Mid-Market
+O-02207,Contract Review,30,10.0,Blue Compass - New Business,U-007,8100.0,2026-08-08,SMB
+O-02209,Proposal Sent,33,28.25,Kim & Flores Bank - New Business,U-020,410000.0,2026-09-03,Enterprise
+O-02211,Proposal Sent,40,17.0,Owens Gate Tooling - New Business,U-014,26000.0,2026-08-08,Mid-Market
+O-02226,Negotiation,24,16.25,Southern Mill - Expansion,U-012,42000.0,2026-08-10,Mid-Market
+O-02227,Negotiation,18,16.25,Bright Lake Works - Renewal,U-013,123000.0,2026-08-10,Mid-Market
+O-02233,Negotiation,32,16.25,Garcia & Abbott Plastics - New Business,U-015,21000.0,2026-11-01,Mid-Market
+O-02254,Discovery,42,33.5,Bright Thistle Supply - New Business,U-022,0.0,2027-02-24,Enterprise
+O-02258,Proposal Sent,60,28.25,Perry Ledger Apps - New Business,U-022,328000.0,2026-12-24,Enterprise
+O-02261,Negotiation,31,26.25,Swiftpath Outfitters - Renewal,U-021,204000.0,2026-11-03,Enterprise
+O-02281,Contract Review,25,10.0,Vector Labs - New Business,U-006,11900.0,2026-10-15,SMB
+O-02295,Contract Review,32,20.0,Mitchell Badger - New Business,U-015,59000.0,2026-10-14,Mid-Market
+O-02302,Proposal Sent,34,28.25,Lucky Pixel - New Business,U-019,701000.0,2026-12-07,Enterprise
+O-02308,Negotiation,27,7.0,Aspen Tower - New Business,U-008,0.0,2026-11-06,SMB
+O-02315,Discovery,58,33.5,Bell & Chang Movers - New Business,U-020,0.0,2027-05-23,Enterprise
+O-02318,Negotiation,20,16.25,Ember Bell Logistics - New Business,U-014,39000.0,2026-11-03,Mid-Market
+O-02319,Negotiation,17,7.0,Fernandez & Thompson Clinic - New Business,U-009,6600.0,2026-11-09,SMB
+O-02321,Negotiation,19,16.25,Echo Labs - New Business,U-012,33000.0,2026-11-19,Mid-Market
+O-02322,Negotiation,39,16.25,Humble Magnolia Partners - New Business,U-012,74000.0,2026-11-08,Mid-Market
+O-02324,Proposal Sent,44,28.25,Crimson Forge Supply Co - New Business,U-021,0.0,2026-12-25,Enterprise
+O-02325,Proposal Sent,30,28.25,Maple Beacon - Expansion,U-021,151000.0,2026-11-24,Enterprise
+O-02338,Proposal Sent,18,17.0,Pulse Works - Renewal,U-012,49000.0,2026-12-02,Mid-Market
+O-02347,Negotiation,23,16.25,Ivory Lake Partners - New Business,U-012,68000.0,2026-10-31,Mid-Market
+O-02349,Contract Review,20,10.0,Fair Stone Insurance - Expansion,U-009,0.0,2026-10-24,SMB
+O-02373,Proposal Sent,23,17.0,Modern Bridge - Expansion,U-015,36000.0,2026-12-12,Mid-Market
+O-02384,Discovery,44,33.5,Goldwood Freight - New Business,U-020,0.0,2027-03-06,Enterprise
+O-02388,Discovery,32,18.0,Ivory Compass - Renewal,U-016,145000.0,2027-02-02,Mid-Market
+O-02393,Negotiation,28,7.0,Byte Forge - New Business,U-010,6600.0,2026-10-31,SMB
+O-02396,Proposal Sent,36,17.0,Amber Key Tech - Renewal,U-012,42000.0,2026-11-25,Mid-Market
+O-02405,Discovery,37,33.5,Hughes & Lee Design - New Business,U-019,135000.0,2027-01-19,Enterprise
+O-02406,Negotiation,28,16.25,Sharp Cove - Expansion,U-012,21000.0,2026-10-27,Mid-Market
+O-02417,Proposal Sent,32,17.0,Little Summit Wind - New Business,U-012,87000.0,2026-11-19,Mid-Market
+O-02425,Negotiation,15,7.0,Starwell - New Business,U-005,21000.0,2026-11-03,SMB
+O-02438,Proposal Sent,20,8.0,Copper Wave Manufacturing - Expansion,U-015,11000.0,2026-11-14,SMB
+O-02440,Discovery,41,33.5,Pinepath AI - Renewal,U-021,229000.0,2027-02-15,Enterprise
+O-02447,Contract Review,11,10.0,Oak Tide Partners - New Business,U-009,14400.0,2026-10-18,SMB
+O-02451,Proposal Sent,21,17.0,Scarlet Summit Lending - New Business,U-013,114000.0,2026-11-18,Mid-Market
+O-02456,Proposal Sent,21,17.0,Canyon Beacon Advisors - New Business,U-017,0.0,2026-11-14,Mid-Market
+O-02475,Contract Review,11,10.0,Bold Fox - New Business,U-010,14900.0,2026-10-14,SMB
+O-02479,Discovery,31,18.0,Ivory Ridge Wealth - Expansion,U-012,12000.0,2026-12-28,Mid-Market
+O-02480,Proposal Sent,28,8.0,Red Atlas - New Business,U-006,10200.0,2026-12-07,SMB
+O-02483,Negotiation,8,7.0,Vasquez & Fischer - New Business,U-010,14300.0,2026-10-25,SMB
+O-02486,Contract Review,18,10.0,Pulse Tech - New Business,U-010,19100.0,2026-10-14,SMB
+O-02515,Proposal Sent,21,17.0,Pixel Labs - New Business,U-012,44000.0,2026-12-13,Mid-Market
+O-02516,Contract Review,14,10.0,Owl Finch Medical - New Business,U-006,14800.0,2026-10-18,SMB
+O-02528,Contract Review,12,10.0,Hamilton & Abbott Foods - New Business,U-006,8600.0,2026-10-16,SMB
+O-02529,Discovery,30,18.0,Nguyen & Mendoza Logistics - Expansion,U-012,0.0,2027-02-21,Mid-Market
+O-02531,Negotiation,17,7.0,Watson & Mahoney - New Business,U-006,10600.0,2026-10-21,SMB
+O-02538,Discovery,24,18.0,Happy Prairie Design - New Business,U-015,39000.0,2027-01-09,Mid-Market
+O-02545,Proposal Sent,22,17.0,Adeyemi & Daniels - New Business,U-014,0.0,2026-12-03,Mid-Market
+O-02549,Proposal Sent,19,8.0,Scarlet Glacier - Expansion,U-006,12200.0,2026-11-08,SMB
+O-02557,Discovery,9,7.0,Steady Rocket Software - New Business,U-005,8000.0,2027-01-13,SMB
+O-02561,Discovery,22,18.0,Swift Harbor - New Business,U-015,80000.0,2026-12-30,Mid-Market
+O-02562,Negotiation,16,7.0,Sunny Orchard - New Business,U-006,0.0,2026-10-27,SMB
+O-02564,Contract Review,12,10.0,Green Meadow - New Business,U-006,17700.0,2026-10-18,SMB
+O-02571,Discovery,20,18.0,Vector Tech - New Business,U-014,39000.0,2026-12-08,Mid-Market
+O-02577,Negotiation,10,7.0,Henderson & Lopez - New Business,U-006,13800.0,2026-10-29,SMB
+O-02587,Contract Review,12,10.0,Northbay Payments - Expansion,U-008,16300.0,2026-10-17,SMB
+O-02597,Proposal Sent,12,8.0,Spark Glacier - New Business,U-006,4400.0,2026-11-22,SMB
+O-02600,Proposal Sent,10,8.0,Brighthaven - New Business,U-005,0.0,2026-11-06,SMB
+O-02603,Negotiation,9,7.0,Sanders Summit Components - Renewal,U-006,24200.0,2026-10-24,SMB
+O-02612,Proposal Sent,18,17.0,Ridge Clover Films - New Business,U-014,65000.0,2026-11-10,Mid-Market
+O-02614,Proposal Sent,9,8.0,Circuit Works - New Business,U-009,25200.0,2026-10-27,SMB
+O-02619,Proposal Sent,10,8.0,Forge Pebble - New Business,U-010,14400.0,2026-11-12,SMB
+O-02623,Proposal Sent,9,8.0,Lantern Moss - New Business,U-009,27000.0,2026-10-30,SMB
+O-02628,Discovery,14,7.0,Hamilton & Alvarez AI - New Business,U-006,0.0,2026-11-20,SMB
+O-02640,Proposal Sent,9,8.0,Modern Cypress Design - New Business,U-005,0.0,2026-11-03,SMB
+O-02649,Proposal Sent,9,8.0,Northern Anchor Goods - New Business,U-007,8700.0,2026-11-09,SMB
+O-02654,Proposal Sent,10,8.0,Echo Stack - New Business,U-010,17700.0,2026-11-07,SMB
+O-02656,Negotiation,9,7.0,Cobalt Moss Payments - Expansion,U-010,7400.0,2026-10-18,SMB
+O-02660,Discovery,10,7.0,Gentle Barn Wellness - New Business,U-008,0.0,2026-11-07,SMB
+O-02661,Discovery,8,7.0,Lawson Cedar Advisors - New Business,U-006,17200.0,2026-11-26,SMB
+O-02703,Discovery,8,7.0,Bell & Lawson Press - New Business,U-006,5300.0,2026-11-10,SMB

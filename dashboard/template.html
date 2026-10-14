@@ -1,0 +1,377 @@
+<title>Pipeline Forecast</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the call first (forecast, range, coverage), then the health signals as a grid of
+   status cards, then how the forecast earned trust (back-test, funnel), then where to act. */
+:root {
+  --bg: #0e1217; --panel: #151a21; --panel-2: #1b222b; --line: #262e38; --line-2: #313b47;
+  --fg: #e7ecf2; --muted: #8b97a4; --faint: #5f6b78;
+  --accent: #9a8cff; --accent-soft: rgba(154, 140, 255, .14);
+  --red: #e0457b; --amber: #ba8c22; --green: #2fae80;
+  --red-ink: #f27aa3; --amber-ink: #dcae4a; --green-ink: #5fd3a6;
+  --series-2: #6c7a8a; --series-3: #4d5966;
+  --tip-bg: #222a34; --shadow: 0 12px 32px rgba(0, 0, 0, .45);
+  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 14px; --r-sm: 8px;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f5f6f9; --panel: #ffffff; --panel-2: #f1f3f7; --line: #e2e6ec; --line-2: #d3d9e1;
+  --fg: #141a22; --muted: #5d6875; --faint: #8a95a2;
+  --accent: #6553e0; --accent-soft: rgba(101, 83, 224, .1);
+  --red: #c2336f; --amber: #a87a12; --green: #1f9a6c;
+  --red-ink: #b02a63; --amber-ink: #8a6309; --green-ink: #17805a;
+  --series-2: #8a95a2; --series-3: #b6bec8;
+  --tip-bg: #ffffff; --shadow: 0 12px 32px rgba(20, 26, 34, .14);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin-inline: auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 20px; }
+.mono { font-family: var(--mono); font-size: 12.5px; }
+header { display: grid; gap: 10px; padding-bottom: 8px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 20%, transparent); }
+h1 { margin: 0; font-size: clamp(30px, 4.4vw, 44px); font-weight: 600; letter-spacing: -.025em; line-height: 1.05; text-wrap: balance; }
+h2 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
+.section-h { font-size: 13px; font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 12px 0 -6px; }
+.takeaway { margin: 0; max-width: 72ch; font-size: 16px; color: var(--muted); text-wrap: pretty; }
+.takeaway b { color: var(--fg); font-weight: 600; }
+.btn { font: 500 13px var(--sans); color: var(--muted); background: none; border: 1px solid transparent; border-radius: 999px; padding: 7px 12px; cursor: pointer; margin-left: auto; }
+.btn:hover { color: var(--fg); border-color: var(--line); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 6px; align-content: start; }
+.kpi .label { color: var(--muted); font-size: 13px; }
+.kpi .big { font-size: 34px; font-weight: 600; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.kpi .sub { color: var(--faint); font-size: 12.5px; }
+.kpi.hero { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); background: linear-gradient(180deg, var(--accent-soft), var(--panel) 70%); }
+.kpi.hero .big { color: var(--accent); }
+.kpi.bad .big { color: var(--red-ink); }
+.range { position: relative; height: 22px; margin-top: 6px; }
+.range .rail { position: absolute; left: 0; right: 0; top: 9px; height: 4px; border-radius: 2px; background: var(--panel-2); }
+.range .span { position: absolute; top: 9px; height: 4px; border-radius: 2px; background: color-mix(in srgb, var(--accent) 45%, transparent); }
+.range .mk { position: absolute; top: 3px; width: 2px; height: 16px; border-radius: 1px; background: var(--fg); }
+.range .mk.q { background: var(--muted); }
+.range-lab { display: flex; justify-content: space-between; color: var(--faint); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+
+.signals { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+.sig { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 8px; align-content: start; position: relative; overflow: hidden; }
+.sig::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--c); }
+.sig .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.sig .nm { font-size: 13px; color: var(--muted); }
+.sig .v { font-size: 24px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.sig p { margin: 0; font-size: 13px; color: var(--muted); text-wrap: pretty; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; padding: 2px 9px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--c) 50%, transparent); color: var(--ci); white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
+.s-green { --c: var(--green); --ci: var(--green-ink); }
+.s-amber { --c: var(--amber); --ci: var(--amber-ink); }
+.s-red { --c: var(--red); --ci: var(--red-ink); }
+.s-muted { --c: var(--faint); --ci: var(--muted); }
+
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 16px; align-items: start; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.note { margin: 0; color: var(--muted); font-size: 13px; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: 12.5px; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.sw { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.swl { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { fill: var(--muted); font-family: var(--sans); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .hit { fill: transparent; cursor: crosshair; }
+
+.hbars { display: grid; gap: 12px; }
+.hrow { display: grid; grid-template-columns: minmax(96px, 128px) 1fr 64px; gap: 12px; align-items: center; font-size: 13px; }
+.hrow .val { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.htrack { position: relative; height: 12px; border-radius: 6px; background: var(--panel-2); display: flex; gap: 2px; overflow: visible; }
+.htrack i { display: block; height: 100%; border-radius: 6px; }
+.htrack .tick { position: absolute; top: -4px; width: 2px; height: 20px; border-radius: 1px; background: var(--fg); opacity: .7; }
+
+.tbl-wrap { overflow: auto; max-height: 460px; border: 1px solid var(--line); border-radius: var(--r-sm); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { position: sticky; top: 0; background: var(--panel-2); color: var(--muted); font-weight: 500; text-align: left; padding: 10px 12px; white-space: nowrap; border-bottom: 1px solid var(--line); }
+td.n, th.n { white-space: nowrap; }
+td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; font-variant-numeric: tabular-nums; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: var(--panel-2); }
+.n { text-align: right; }
+.red-ink { color: var(--red-ink); }
+.cov { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.cov i { display: block; height: 6px; border-radius: 3px; background: var(--c); }
+
+footer { color: var(--faint); font-size: 12.5px; display: grid; gap: 6px; padding-top: 8px; }
+#tip { position: fixed; pointer-events: none; z-index: 20; background: var(--tip-bg); color: var(--fg); border: 1px solid var(--line-2); border-radius: var(--r-sm);
+  box-shadow: var(--shadow); padding: 8px 10px; font-size: 12.5px; min-width: 170px; display: grid; gap: 3px; }
+#tip .row { display: flex; justify-content: space-between; gap: 14px; }
+#tip .k { color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+@media (max-width: 560px) { .hide-sm { display: none; } .hrow { grid-template-columns: 92px 1fr 52px; } }
+@media (prefers-reduced-motion: no-preference) { .htrack i { transition: width .45s cubic-bezier(.2, .7, .2, 1); } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><span class="dot"></span><span id="asof">Snapshot</span><span>·</span><span>Fictional SaaS company</span>
+      <button class="btn" id="theme" type="button">Light mode</button></div>
+    <h1 id="title">Pipeline Forecast</h1>
+    <p class="takeaway" id="takeaway"></p>
+  </header>
+
+  <section class="kpis" aria-label="The call">
+    <div class="kpi hero"><span class="label" id="k1l">Forecast</span><span class="big" id="k1"></span><span class="sub" id="k1s"></span>
+      <div class="range" id="range"><div class="rail"></div><div class="span"></div></div>
+      <div class="range-lab"><span id="rlo"></span><span id="rhi"></span></div></div>
+    <div class="kpi"><span class="label">Won so far</span><span class="big" id="k2"></span><span class="sub" id="k2s"></span></div>
+    <div class="kpi"><span class="label">Gap to last quarter</span><span class="big" id="k3"></span><span class="sub" id="k3s"></span></div>
+    <div class="kpi bad"><span class="label">Can't be forecast yet</span><span class="big" id="k4"></span><span class="sub" id="k4s"></span></div>
+  </section>
+
+  <div class="section-h">Pipeline health</div>
+  <section class="signals" id="signals" aria-label="Health signals"></section>
+
+  <div class="section-h">Can we trust the forecast?</div>
+  <section class="grid2">
+    <div class="card" id="bt-card">
+      <h2>Forecast vs what actually closed</h2>
+      <p class="note">Each method's call on the first day of the quarter, against the quarter's real bookings.</p>
+      <div class="chart" id="btChart"></div>
+      <div class="legend" id="btLegend"></div>
+    </div>
+    <div class="card" id="acc-card">
+      <h2>How far off each method was</h2>
+      <p class="note">Average miss across the five quarters. A negative lean means it usually called too low.</p>
+      <div class="hbars" id="accBars"></div>
+      <p class="note" id="accNote"></p>
+    </div>
+  </section>
+  <section class="grid2">
+    <div class="card" id="funnel-card">
+      <h2>Win rate from each stage</h2>
+      <p class="note">Share of closed deals that won after reaching each stage. The white tick is the textbook weight the weighted forecast uses.</p>
+      <div class="hbars" id="funnel"></div>
+    </div>
+    <div class="card" id="stage-card">
+      <h2>Open pipeline by stage</h2>
+      <p class="note">Split by close date: already past, this quarter, or later.</p>
+      <div class="hbars" id="stages"></div>
+      <div class="legend" id="stageLegend"></div>
+    </div>
+  </section>
+
+  <div class="section-h">Where to act</div>
+  <section class="grid2">
+    <div class="card" id="reps-card">
+      <h2>Coverage by rep</h2>
+      <p class="note">This quarter's pipeline against the quota each rep still has to close. Lowest first.</p>
+      <div class="tbl-wrap"><table id="reps"><thead><tr><th>Rep</th><th class="hide-sm">Segment</th><th class="n">Won</th><th class="n">Pipeline</th><th class="n">Coverage</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="card" id="stuck-card">
+      <h2>Biggest stuck deals</h2>
+      <p class="note">Open deals that have sat in their stage longer than 3 in 4 winning deals in the same segment.</p>
+      <div class="tbl-wrap"><table id="stuck"><thead><tr><th>Deal</th><th>Stage</th><th class="n">Days</th><th class="n">Amount</th><th class="n hide-sm">Close date</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <footer>
+    <span id="foot"></span>
+    <span>Built from the CRM export by <span class="mono">build_dashboard.py</span>. Data from a fictional SaaS company. Every record is made up.</span>
+  </footer>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+const DATA = /*__DATA__*/null;
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const NS = 'http://www.w3.org/2000/svg';
+  const sv = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+  const fmt = new Intl.NumberFormat('en-US');
+  const money = (v) => Math.abs(v) >= 1e6 ? '$' + (v / 1e6).toFixed(1) + 'M' : Math.abs(v) >= 1e3 ? '$' + Math.round(v / 1e3) + 'K' : '$' + fmt.format(Math.round(v));
+  const pct = (v, d = 0) => (v * 100).toFixed(d) + '%';
+  const qLabel = (q) => q.replace(/(\d{4})Q(\d)/, 'Q$2 $1');
+  const C = DATA.context, F = DATA.current;
+
+  const themeBtn = $('#theme');
+  const setTheme = (t) => { document.documentElement.dataset.theme = t; themeBtn.textContent = t === 'dark' ? 'Light mode' : 'Dark mode'; };
+  setTheme('dark');
+  themeBtn.addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+  const tip = $('#tip');
+  const showTip = (e, title, rows) => {
+    tip.replaceChildren(el('div', null, title), ...rows.map(([k, v, color]) => {
+      const r = el('div', 'row'); const kk = el('span', 'k');
+      if (color) { const s = el('span', 'swl'); s.style.background = color; kk.append(s); }
+      kk.append(k); r.append(kk, el('span', null, v)); return r;
+    }));
+    tip.hidden = false;
+    tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + 'px';
+    tip.style.top = Math.min(e.clientY + 14, innerHeight - tip.offsetHeight - 8) + 'px';
+  };
+  const hideTip = () => { tip.hidden = true; };
+
+  // ---- Header and the call
+  $('#asof').textContent = 'As of ' + new Date(DATA.asOf + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  $('#title').textContent = qLabel(C.quarter) + ' Pipeline Forecast';
+  const vsLast = F.model / C.last_quarter_actual - 1;
+  const t = $('#takeaway');
+  t.append(el('b', null, `${qLabel(C.quarter)} should land near ${money(F.model)}`),
+    `, well above the ${money(C.quota)} quota but ${pct(Math.abs(vsLast))} ${vsLast < 0 ? 'below' : 'above'} last quarter's ${money(C.last_quarter_actual)}. `,
+    `The bigger risk is the data: ${money(C.past_due_amount)} of open pipeline has a close date that already passed, so no forecast can count it until reps re-date it.`);
+  $('#k1l').textContent = 'Forecast for ' + qLabel(C.quarter);
+  $('#k1').textContent = money(F.model);
+  $('#k1s').textContent = `Model forecast, the white tick. The gray tick is the ${money(C.quota)} quota; the band runs from Commit to Best case.`;
+  const lo = Math.min(F.commit, C.quota) * 0.9, hi = Math.max(F.best_case, C.last_quarter_actual) * 1.05;
+  const x = (v) => (100 * (v - lo) / (hi - lo)) + '%';
+  const span = $('#range .span'); span.style.left = x(F.commit); span.style.width = `calc(${x(F.best_case)} - ${x(F.commit)})`;
+  const mk = (v, cls, label) => { const m = el('div', 'mk ' + cls); m.style.left = x(v); m.title = label; $('#range').append(m); };
+  mk(C.quota, 'q', 'Quota'); mk(F.model, '', 'Forecast');
+  $('#rlo').textContent = 'Commit ' + money(F.commit); $('#rhi').textContent = 'Best case ' + money(F.best_case);
+  $('#k2').textContent = money(C.won_so_far);
+  $('#k2s').textContent = `${pct(C.won_so_far / C.quota)} of quota, ${DATA.daysIn} days into the quarter`;
+  const gap = C.last_quarter_actual - C.won_so_far;
+  $('#k3').textContent = money(gap);
+  $('#k3s').textContent = `to match last quarter, with ${money(C.pipeline_in_quarter)} of pipeline dated this quarter`;
+  $('#k4').textContent = money(C.past_due_amount);
+  $('#k4s').textContent = `${pct(C.past_due_amount / C.open_pipeline)} of open pipeline has a close date in the past`;
+
+  // ---- Signals
+  const order = { red: 0, amber: 1, green: 2 };
+  [...DATA.signals].sort((a, b) => order[a.status] - order[b.status]).forEach((s) => {
+    const c = el('article', 'sig s-' + s.status);
+    const top = el('div', 'top'); top.append(el('span', 'nm', s.name), el('span', 'pill', s.status === 'red' ? 'Act now' : s.status === 'amber' ? 'Watch' : 'Healthy'));
+    c.append(top, el('span', 'v', s.shown), el('p', null, s.means));
+    $('#signals').append(c);
+  });
+
+  // ---- Back-test chart
+  const SERIES = [
+    { k: 'actual', name: 'Actual', color: 'var(--fg)', w: 2.5 },
+    { k: 'model', name: 'Model', color: 'var(--accent)', w: 2.5 },
+    { k: 'best_case', name: 'Best case', color: 'var(--series-2)', w: 1.5, dash: '' },
+    { k: 'weighted', name: 'Weighted', color: 'var(--series-2)', w: 1.5, dash: '5 4' },
+    { k: 'commit', name: 'Commit', color: 'var(--series-3)', w: 1.5, dash: '2 3' },
+  ];
+  function drawBacktest() {
+    const box = $('#btChart'); box.replaceChildren();
+    const W = Math.max(300, box.clientWidth), H = 260, m = { t: 12, r: 78, b: 28, l: 48 };
+    const rows = DATA.backtest;
+    const max = Math.max(...rows.flatMap((r) => SERIES.map((s) => r[s.k]))) * 1.08;
+    const X = (i) => m.l + i * (W - m.l - m.r) / (rows.length - 1);
+    const Y = (v) => H - m.b - (v / max) * (H - m.t - m.b);
+    const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', role: 'img', 'aria-label': 'Forecast versus actual bookings by quarter' });
+    const step = max > 8e6 ? 2e6 : 1e6;
+    for (let v = 0; v <= max; v += step) {
+      svg.append(sv('line', { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), class: 'grid' }));
+      const tx = sv('text', { x: m.l - 8, y: Y(v) + 4, 'text-anchor': 'end' }); tx.textContent = money(v).replace('.0M', 'M'); svg.append(tx);
+    }
+    rows.forEach((r, i) => { const tx = sv('text', { x: X(i), y: H - 8, 'text-anchor': 'middle' }); tx.textContent = qLabel(r.quarter); svg.append(tx); });
+    const ends = [];
+    [...SERIES].reverse().forEach((s) => {
+      const d = rows.map((r, i) => `${i ? 'L' : 'M'}${X(i)},${Y(r[s.k])}`).join('');
+      svg.append(sv('path', { d, fill: 'none', stroke: s.color, 'stroke-width': s.w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-dasharray': s.dash || '' }));
+      if (s.k === 'actual' || s.k === 'model') rows.forEach((r, i) => svg.append(sv('circle', { cx: X(i), cy: Y(r[s.k]), r: 3.5, fill: s.color, stroke: 'var(--panel)', 'stroke-width': 2 })));
+      ends.push({ s, y: Y(rows[rows.length - 1][s.k]) });
+    });
+    ends.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 13) ends[i].y = ends[i - 1].y + 13;
+    ends.forEach(({ s, y }) => { const tx = sv('text', { x: W - m.r + 8, y: y + 4 }); tx.textContent = s.name; if (s.k === 'actual' || s.k === 'model') tx.style.fill = s.color; svg.append(tx); });
+    const guide = sv('line', { y1: m.t, y2: H - m.b, stroke: 'var(--line-2)', 'stroke-width': 1, visibility: 'hidden' }); svg.append(guide);
+    rows.forEach((r, i) => {
+      const w = (W - m.l - m.r) / (rows.length - 1);
+      const hit = sv('rect', { x: X(i) - w / 2, y: m.t, width: w, height: H - m.t - m.b, class: 'hit' });
+      hit.addEventListener('mousemove', (e) => {
+        guide.setAttribute('x1', X(i)); guide.setAttribute('x2', X(i)); guide.setAttribute('visibility', 'visible');
+        showTip(e, qLabel(r.quarter), SERIES.map((s) => [s.name, s.k === 'actual' ? money(r.actual) : `${money(r[s.k])} (${r[s.k + '_error'] >= 0 ? '+' : ''}${pct(r[s.k + '_error'])})`, s.color]));
+      });
+      hit.addEventListener('mouseleave', () => { guide.setAttribute('visibility', 'hidden'); hideTip(); });
+      svg.append(hit);
+    });
+    box.append(svg);
+    $('#btLegend').replaceChildren(...SERIES.map((s) => { const sp = el('span'); const sw = el('span', 'swl'); sw.style.background = s.color; if (s.dash) sw.style.opacity = .8; sp.append(sw, s.name); return sp; }));
+  }
+
+  // ---- Accuracy bars
+  const names = { commit: 'Commit', best_case: 'Best case', weighted: 'Weighted', model: 'Model' };
+  const acc = Object.keys(names).map((k) => {
+    const e = DATA.backtest.map((r) => r[k + '_error']);
+    return { k, miss: e.reduce((a, b) => a + Math.abs(b), 0) / e.length, bias: e.reduce((a, b) => a + b, 0) / e.length };
+  }).sort((a, b) => a.miss - b.miss);
+  const maxMiss = Math.max(...acc.map((a) => a.miss));
+  acc.forEach((a, i) => {
+    const row = el('div', 'hrow'); const tr = el('div', 'htrack'); const b = el('i');
+    b.style.width = (100 * a.miss / maxMiss) + '%'; b.style.background = i === 0 ? 'var(--accent)' : 'var(--series-3)'; tr.append(b);
+    row.append(el('span', null, names[a.k]), tr, el('span', 'val', pct(a.miss)));
+    row.addEventListener('mousemove', (e) => showTip(e, names[a.k], [['Average miss', pct(a.miss, 1)], ['Lean', (a.bias >= 0 ? '+' : '') + pct(a.bias, 1)]]));
+    row.addEventListener('mouseleave', hideTip);
+    $('#accBars').append(row);
+  });
+  const best = acc[0];
+  $('#accNote').textContent = `${names[best.k]} was closest, off by ${pct(best.miss)} on average and leaning ${best.bias < 0 ? 'low' : 'high'} by ${pct(Math.abs(best.bias))}. `
+    + `Commit misses by ${pct(acc.find((a) => a.k === 'commit').miss)} because about a third of each quarter's bookings come from deals that didn't exist when the quarter started.`;
+
+  // ---- Funnel
+  DATA.funnel.forEach((f) => {
+    const row = el('div', 'hrow'); const tr = el('div', 'htrack'); const b = el('i');
+    b.style.width = pct(f.win_rate_from_here, 1); b.style.background = 'var(--accent)'; tr.append(b);
+    const tk = el('span', 'tick'); tk.style.left = `calc(${pct(f.weight, 1)} - 1px)`; tr.append(tk);
+    row.append(el('span', null, f.stage), tr, el('span', 'val', pct(f.win_rate_from_here)));
+    row.addEventListener('mousemove', (e) => showTip(e, f.stage, [['Deals that reached it', fmt.format(f.deals)], ['Went on to win', pct(f.win_rate_from_here, 1)], ['Textbook weight', pct(f.weight)]]));
+    row.addEventListener('mouseleave', hideTip);
+    $('#funnel').append(row);
+  });
+
+  // ---- Open pipeline by stage
+  const PARTS = [['past_due', 'Past due', 'var(--red)'], ['this_quarter', 'This quarter', 'var(--accent)'], ['later', 'Later', 'var(--series-3)']];
+  const maxStage = Math.max(...DATA.openByStage.map((s) => s.amount));
+  DATA.openByStage.forEach((s) => {
+    const row = el('div', 'hrow'); const tr = el('div', 'htrack');
+    PARTS.forEach(([k, , c]) => { if (!s[k]) return; const b = el('i'); b.style.width = (100 * s[k] / maxStage) + '%'; b.style.background = c; tr.append(b); });
+    row.append(el('span', null, s.stage), tr, el('span', 'val', money(s.amount)));
+    row.addEventListener('mousemove', (e) => showTip(e, `${s.stage} · ${fmt.format(s.deals)} deals`, PARTS.map(([k, n, c]) => [n, money(s[k]), c])));
+    row.addEventListener('mouseleave', hideTip);
+    $('#stages').append(row);
+  });
+  $('#stageLegend').replaceChildren(...PARTS.map(([, n, c]) => { const sp = el('span'); const sw = el('span', 'sw'); sw.style.background = c; sp.append(sw, n); return sp; }));
+
+  // ---- Rep coverage
+  DATA.reps.forEach((r) => {
+    const tr = el('tr'); const cov = el('td', 'n'); const box = el('span', 'cov');
+    let cls = 's-green', txt;
+    if (r.coverage == null) { cls = 's-muted'; txt = 'Quota hit'; }
+    else { cls = r.coverage < 2 ? 's-red' : r.coverage < 3 ? 's-amber' : 's-green'; txt = r.coverage.toFixed(1) + 'x'; }
+    box.className = 'cov ' + cls;
+    if (r.coverage != null) { const b = el('i'); b.style.width = Math.min(48, 12 * r.coverage) + 'px'; box.append(b); }
+    box.append(el('span', 'pill', txt)); cov.append(box);
+    tr.append(el('td', null, r.name), el('td', 'hide-sm', r.segment), el('td', 'n', money(r.won)), el('td', 'n', money(r.pipeline)), cov);
+    $('#reps tbody').append(tr);
+  });
+
+  // ---- Stuck deals
+  DATA.stuck.forEach((d) => {
+    const tr = el('tr'); const name = el('td'); name.append(el('div', null, d.name), el('div', 'mono', `${d.opportunity_id} · ${d.owner}`));
+    name.lastChild.style.color = 'var(--faint)';
+    const days = el('td', 'n', `${d.days} / ${d.limit}`); days.title = 'Days in stage / typical limit for winning deals';
+    const close = el('td', 'n hide-sm', new Date(d.close_date + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }));
+    if (d.past_due) close.className += ' red-ink';
+    tr.append(name, el('td', null, d.stage), days, el('td', 'n', money(d.amount)), close);
+    $('#stuck tbody').append(tr);
+  });
+
+  $('#foot').textContent = `Back-tested on ${DATA.backtest.length} quarters (${qLabel(DATA.backtest[0].quarter)} to ${qLabel(DATA.backtest[DATA.backtest.length - 1].quarter)}). `
+    + `Each back-test forecast uses only what was known on the quarter's first day.`;
+
+  drawBacktest();
+  let w = innerWidth; addEventListener('resize', () => { if (innerWidth !== w) { w = innerWidth; drawBacktest(); } });
+})();
+</script>

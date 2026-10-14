@@ -1,0 +1,70 @@
+== bookings_by_quarter
+quarter  closed_deals  won_deals  win_rate  won_amount
+2025-Q1            42         11     0.262    234800.0
+2025-Q2           117         37     0.316    774600.0
+2025-Q3           225         78     0.347   2287800.0
+2025-Q4           358        118     0.330   4118900.0
+2026-Q1           420        148     0.352   5976200.0
+2026-Q2           496        178     0.359   5185000.0
+2026-Q3           606        231     0.381   9846900.0
+2026-Q4            50         32     0.640   1839100.0
+
+== win_rate_by_segment
+   segment         type  closed_deals  win_rate  avg_days_to_win
+Enterprise    Expansion            20     0.450            158.0
+Enterprise New Business           194     0.165            106.0
+Enterprise      Renewal            15     0.733            138.0
+Mid-Market    Expansion           101     0.485             68.0
+Mid-Market New Business           614     0.267             72.0
+Mid-Market      Renewal            66     0.894             67.0
+       SMB    Expansion           234     0.449             31.0
+       SMB New Business           963     0.321             31.0
+       SMB      Renewal           107     0.888             30.0
+
+== stage_funnel
+          stage  deals  won  win_rate_from_here
+    Prospecting   2314  833               0.360
+      Discovery   2075  833               0.401
+  Proposal Sent   1621  833               0.514
+    Negotiation   1199  833               0.695
+Contract Review    984  833               0.847
+
+== slippage
+ timing  closed_deals  win_rate  avg_days_pushed
+On time          1939     0.343              NaN
+ Pushed           375     0.448             28.0
+
+== created_by_month
+  month    segment  deals    amount
+2026-03 Enterprise     21 3593200.0
+2026-03 Mid-Market     72 3903200.0
+2026-03        SMB     94 1575000.0
+2026-04 Enterprise     19 4579000.0
+2026-04 Mid-Market     69 3624900.0
+2026-04        SMB     80 1356500.0
+2026-05 Enterprise     29 6861900.0
+2026-05 Mid-Market     59 3173600.0
+2026-05        SMB    110 1503100.0
+2026-06 Enterprise     27 5853000.0
+2026-06 Mid-Market     72 3711000.0
+2026-06        SMB     96 1278300.0
+2026-07 Enterprise     18 4208300.0
+2026-07 Mid-Market     85 4225900.0
+2026-07        SMB    125 1773900.0
+2026-08 Enterprise     46 8099100.0
+2026-08 Mid-Market     78 3567600.0
+2026-08        SMB    116 1614800.0
+2026-09 Enterprise     32 6184000.0
+2026-09 Mid-Market     64 2151000.0
+2026-09        SMB    127 1610400.0
+2026-10 Enterprise      5 1975000.0
+2026-10 Mid-Market     24 1141100.0
+2026-10        SMB     32  353100.0
+
+== open_by_stage
+          stage  deals    amount  past_due  this_quarter     later
+    Prospecting     33 4797900.0   56000.0      364900.0 4377000.0
+      Discovery     87 6658100.0  258000.0     1095100.0 5305000.0
+  Proposal Sent    117 9880300.0 3033000.0     5346300.0 1501000.0
+    Negotiation    100 7940100.0 5777600.0     2162500.0       0.0
+Contract Review     76 5998100.0 4765100.0     1233000.0       0.0
