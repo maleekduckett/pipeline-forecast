@@ -23,6 +23,8 @@ def build_data(data_dir=DEFAULT_DATA) -> dict:
     users = t["users"].set_index("user_id").name
     start, _ = quarter_bounds(AS_OF.to_period("Q"))
 
+    prev = AS_OF.to_period("Q") - 1
+    last_full = f"{prev.year}-Q{prev.quarter}"
     funnel = q["stage_funnel"].assign(weight=lambda d: d.stage.map(STAGE_WEIGHT))
     reps = pd.read_csv(res / "rep_coverage.csv")
     reps["coverage"] = reps.coverage.where(reps.coverage.notna(), None)
@@ -45,6 +47,11 @@ def build_data(data_dir=DEFAULT_DATA) -> dict:
         "signals": records(pd.read_csv(res / "signals.csv")),
         "funnel": records(funnel),
         "openByStage": records(q["open_by_stage"]),
+        "capacity": records(pd.read_csv(res / "capacity.csv")),
+        "winRateSeg": records(q["win_rate_by_segment_quarter"].query("quarter >= '2025-Q3' and quarter <= @last_full")),
+        "leadConv": records(q["lead_conversion"].query("quarter >= '2025-Q1' and quarter <= @last_full")),
+        "pipelineConv": records(q["pipeline_conversion"]),
+        "scorecard": records(q["rep_scorecard"].assign(is_active=lambda d: d.is_active.astype(bool))),
         "reps": records(reps[["name", "segment", "won", "pipeline", "coverage"]]),
         "stuck": records(stuck[["opportunity_id", "name", "owner", "stage", "days", "limit", "amount",
                                 "close_date", "past_due"]]),

@@ -68,3 +68,73 @@ On time          1939     0.343              NaN
   Proposal Sent    117 9880300.0 3033000.0     5346300.0 1501000.0
     Negotiation    100 7940100.0 5777600.0     2162500.0       0.0
 Contract Review     76 5998100.0 4765100.0     1233000.0       0.0
+
+== lead_conversion
+quarter  leads  converted  conversion
+2025-Q1    566         78       0.138
+2025-Q2    559         81       0.145
+2025-Q3    605         92       0.152
+2025-Q4    557         69       0.124
+2026-Q1    598         68       0.114
+2026-Q2    581         69       0.119
+2026-Q3    563         73       0.130
+2026-Q4     71          7       0.099
+
+== pipeline_conversion
+quarter    created       won       lost  still_open  dollar_win_rate
+2025-Q1  4394200.0  886500.0  3507700.0         0.0            0.202
+2025-Q2  9519100.0 2366200.0  7152900.0         0.0            0.249
+2025-Q3 16080300.0 4093200.0 11987100.0         0.0            0.255
+2025-Q4 20023600.0 4683700.0 15339900.0         0.0            0.234
+2026-Q1 25118900.0 6807800.0 17479100.0    832000.0            0.280
+2026-Q2 31941300.0 8250100.0 15985200.0   7706000.0            0.340
+2026-Q3 33435000.0 3175800.0  6978000.0  23281200.0            0.313
+2026-Q4  3469200.0       0.0    13900.0   3455300.0            0.000
+
+== win_rate_by_segment_quarter
+quarter    segment  closed_deals  win_rate
+2025-Q1 Enterprise             3     0.000
+2025-Q1 Mid-Market             8     0.375
+2025-Q1        SMB            31     0.258
+2025-Q2 Enterprise             8     0.000
+2025-Q2 Mid-Market            34     0.265
+2025-Q2        SMB            75     0.373
+2025-Q3 Enterprise            20     0.150
+2025-Q3 Mid-Market            65     0.277
+2025-Q3        SMB           140     0.407
+2025-Q4 Enterprise            49     0.143
+2025-Q4 Mid-Market           113     0.301
+2025-Q4        SMB           196     0.393
+2026-Q1 Enterprise            40     0.225
+2026-Q1 Mid-Market           153     0.359
+2026-Q1        SMB           227     0.370
+2026-Q2 Enterprise            48     0.104
+2026-Q2 Mid-Market           182     0.390
+2026-Q2        SMB           266     0.383
+2026-Q3 Enterprise            58     0.448
+2026-Q3 Mid-Market           205     0.327
+2026-Q3        SMB           343     0.402
+2026-Q4 Enterprise             3     0.667
+2026-Q4 Mid-Market            21     0.714
+2026-Q4        SMB            26     0.577
+
+== rep_scorecard
+owner_id              name    segment  is_active  closed_deals  win_rate  bookings  avg_won_deal  avg_days_to_win
+   U-011       Grace Ellis        SMB          0            26     0.577  233700.0       15580.0             31.0
+   U-009        Noah Owens        SMB          1           133     0.444  801200.0       13580.0             33.0
+   U-010     Priya Mendoza        SMB          1           292     0.404 1685400.0       14283.0             30.0
+   U-008      Elena Dawson        SMB          1           107     0.393  645500.0       15369.0             30.0
+   U-006      Noah Mahoney        SMB          1           326     0.383 1692600.0       13541.0             33.0
+   U-007     Rachel Kapoor        SMB          1            72     0.375  365700.0       13544.0             37.0
+   U-012  Jessica Thompson Mid-Market          1           216     0.366 3956000.0       50076.0             71.0
+   U-013      Ravi Simmons Mid-Market          1            48     0.354  787000.0       46294.0             68.0
+   U-017      Lucas Santos Mid-Market          1            40     0.350  813000.0       58071.0             79.0
+   U-015     Marcus Harper Mid-Market          1           123     0.350 2171000.0       50488.0             79.0
+   U-014        Laila Cruz Mid-Market          1            99     0.333 1373000.0       41606.0             75.0
+   U-020   Ashley Robinson Enterprise          1            31     0.323 1772000.0      177200.0            135.0
+   U-018     Brandon Hayes Mid-Market          0            47     0.319  872000.0       58133.0             59.0
+   U-016       Yara Kapoor Mid-Market          1            80     0.313 1188000.0       47520.0             74.0
+   U-005         Mia Rossi        SMB          1            94     0.245  305900.0       13300.0             31.0
+   U-019 Isabella Anderson Enterprise          1            64     0.219 3106000.0      221857.0            140.0
+   U-021   Victor Robinson Enterprise          1            72     0.208 3050000.0      203333.0            127.0
+   U-022      Yara Jackson Enterprise          1            10     0.100  309000.0      309000.0            170.0

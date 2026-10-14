@@ -9,3 +9,5 @@ orphaned,Owned by reps who left,0.0,0%,green,No open deals belong to the two rep
 slipped,Deals pushed at least once,0.22033898305084745,22%,green,91 of 413 open deals have been pushed. Pushed deals have won 45% of the time vs 34% for the rest.
 concentration,Top 5 deals' share,0.2008469093689349,20%,green,"The 5 biggest deals dated this quarter are 20% of its pipeline. Above a third, one loss moves the number a lot."
 win_rate,Win rate trend,0.029034597812689134,+2.9 pts,green,37% of deals won in the last two quarters vs 34% in the two before.
+capacity,AE capacity vs last year,-0.11111111111111116,-11%,amber,16 effective AEs this quarter vs 18 a year ago. The two reps who left haven't been replaced.
+lead_conversion,Lead conversion trend,0.005416493760399668,+0.5 pts,green,12.4% of leads converted in the last two quarters vs 11.9% in the two before.

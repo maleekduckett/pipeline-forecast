@@ -1,2 +1,2 @@
-quarter,as_of,won_so_far,deals_in_quarter,pipeline_in_quarter,past_due_deals,past_due_amount,commit,best_case,weighted,model,model_new_deals
-2026Q4,2026-10-13,1839100.0,246,10201800.0,99,13889700.0,3055800.0,10545500.0,6504070.0,8547472.238754855,1868086.956521739
+quarter,as_of,won_so_far,deals_in_quarter,pipeline_in_quarter,past_due_deals,past_due_amount,commit,best_case,weighted,model,model_new_deals,capacity
+2026Q4,2026-10-13,1839100.0,246,10201800.0,99,13889700.0,3055800.0,10545500.0,6504070.0,8547472.238754855,1868086.956521739,7244400.077969669

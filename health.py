@@ -6,6 +6,7 @@ import argparse
 
 import pandas as pd
 
+from capacity import effective_headcount
 from common import AS_OF, DEFAULT_DATA, OPEN_STAGES, ROOT, THRESHOLDS, load, quarter_bounds
 
 
@@ -117,6 +118,19 @@ def signals(t: dict, day: pd.Timestamp = AS_OF) -> tuple[pd.DataFrame, dict]:
     recent, before = wr.iloc[-2:].mean(), wr.iloc[-4:-2].mean()
     add("win_rate", "Win rate trend", recent - before, f"{(recent - before) * 100:+.1f} pts", True,
         f"{recent:.0%} of deals won in the last two quarters vs {before:.0%} in the two before.")
+
+    ae_now = effective_headcount(users, "Account Executive", q, known_on=day)
+    ae_then = effective_headcount(users, "Account Executive", q - 4)
+    change = ae_now / ae_then - 1
+    add("capacity", "AE capacity vs last year", change, f"{change:+.0%}", True,
+        f"{ae_now:.0f} effective AEs this quarter vs {ae_then:.0f} a year ago. "
+        "The two reps who left haven't been replaced.")
+
+    leads = t["leads"].assign(cq=t["leads"].created_date.dt.to_period("Q"))
+    conv = leads[leads.cq < q].groupby("cq").apply(lambda g: (g.status == "Converted").mean())
+    lc_recent, lc_before = conv.iloc[-2:].mean(), conv.iloc[-4:-2].mean()
+    add("lead_conversion", "Lead conversion trend", lc_recent - lc_before, f"{(lc_recent - lc_before) * 100:+.1f} pts", True,
+        f"{lc_recent:.1%} of leads converted in the last two quarters vs {lc_before:.1%} in the two before.")
 
     context = {"quarter": str(q), "quota": float(team_q), "won_so_far": float(won_q),
                "pipeline_in_quarter": float(in_q.amount.sum()), "last_quarter_actual": float(last_q_actual),

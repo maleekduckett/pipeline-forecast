@@ -13,6 +13,7 @@
   --red: #e0457b; --amber: #ba8c22; --green: #2fae80;
   --red-ink: #f27aa3; --amber-ink: #dcae4a; --green-ink: #5fd3a6;
   --series-2: #6c7a8a; --series-3: #4d5966;
+  --seg-smb: #8a7cf0; --seg-mm: #2398b0; --seg-ent: #c9752f;
   --tip-bg: #222a34; --shadow: 0 12px 32px rgba(0, 0, 0, .45);
   --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -26,6 +27,7 @@
   --red: #c2336f; --amber: #a87a12; --green: #1f9a6c;
   --red-ink: #b02a63; --amber-ink: #8a6309; --green-ink: #17805a;
   --series-2: #8a95a2; --series-3: #b6bec8;
+  --seg-smb: #6553e0; --seg-mm: #0d86a3; --seg-ent: #b8651f;
   --tip-bg: #ffffff; --shadow: 0 12px 32px rgba(20, 26, 34, .14);
   color-scheme: light;
 }
@@ -63,7 +65,7 @@ h2 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
 .range .mk.q { background: var(--muted); }
 .range-lab { display: flex; justify-content: space-between; color: var(--faint); font-size: 11.5px; font-variant-numeric: tabular-nums; }
 
-.signals { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+.signals { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 12px; }
 .sig { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 8px; align-content: start; position: relative; overflow: hidden; }
 .sig::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--c); }
 .sig .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
@@ -108,6 +110,12 @@ tbody tr:hover td { background: var(--panel-2); }
 .n { text-align: right; }
 .red-ink { color: var(--red-ink); }
 .cov { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.inbar { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.inbar i { display: block; height: 6px; border-radius: 3px; background: var(--accent); }
+#convBars .hrow { grid-template-columns: minmax(70px, 90px) 1fr 92px; }
+#convBars .val { white-space: nowrap; }
+#score td:first-child { white-space: nowrap; }
+.left-tag { font-size: 11px; color: var(--red-ink); margin-left: 6px; }
 .cov i { display: block; height: 6px; border-radius: 3px; background: var(--c); }
 
 footer { color: var(--faint); font-size: 12.5px; display: grid; gap: 6px; padding-top: 8px; }
@@ -165,6 +173,35 @@ footer { color: var(--faint); font-size: 12.5px; display: grid; gap: 6px; paddin
       <p class="note">Split by close date: already past, this quarter, or later.</p>
       <div class="hbars" id="stages"></div>
       <div class="legend" id="stageLegend"></div>
+    </div>
+  </section>
+
+  <div class="section-h">Capacity and conversion</div>
+  <section class="grid2">
+    <div class="card" id="cap-card">
+      <h2>Effective headcount and output</h2>
+      <p class="note">Reps counted by how ramped they are and how much of the quarter they were employed. Bookings per effective AE is the productivity a capacity plan runs on.</p>
+      <div class="tbl-wrap"><table id="cap"><thead><tr><th>Quarter</th><th class="n">Effective AEs</th><th class="n hide-sm">Effective SDRs</th><th class="n">Bookings</th><th class="n">Per AE</th></tr></thead><tbody></tbody></table></div>
+      <p class="note" id="capNote"></p>
+    </div>
+    <div class="card" id="wr-card">
+      <h2>Win rate by segment</h2>
+      <p class="note">Share of closed deals won each quarter.</p>
+      <div class="chart" id="wrChart"></div>
+      <p class="note">Enterprise swings the most because it only closes 40 to 60 deals a quarter, so a few wins move the rate a lot. Read it over several quarters, not one.</p>
+    </div>
+  </section>
+  <section class="grid2">
+    <div class="card" id="conv-card">
+      <h2>Conversion</h2>
+      <p class="note">Leads that converted, by the quarter they arrived, and the share of closed pipeline dollars that won, by the quarter the pipeline was created.</p>
+      <div class="hbars" id="convBars"></div>
+      <div class="legend"><span><span class="sw" style="background:var(--accent)"></span>Lead conversion</span><span><span class="sw" style="background:var(--seg-mm)"></span>Pipeline $ won (of closed)</span></div>
+    </div>
+    <div class="card" id="score-card">
+      <h2>Rep scorecard</h2>
+      <p class="note">Last four full quarters. Sorted by win rate within each segment.</p>
+      <div class="tbl-wrap"><table id="score"><thead><tr><th>Rep</th><th class="n">Deals</th><th class="n">Win rate</th><th class="n">Bookings</th><th class="n hide-sm">Avg deal</th><th class="n hide-sm">Days to win</th></tr></thead><tbody></tbody></table></div>
     </div>
   </section>
 
@@ -260,6 +297,7 @@ const DATA = /*__DATA__*/null;
     { k: 'model', name: 'Model', color: 'var(--accent)', w: 2.5 },
     { k: 'best_case', name: 'Best case', color: 'var(--series-2)', w: 1.5, dash: '' },
     { k: 'weighted', name: 'Weighted', color: 'var(--series-2)', w: 1.5, dash: '5 4' },
+    { k: 'capacity', name: 'Capacity', color: 'var(--series-3)', w: 1.5, dash: '8 3 2 3' },
     { k: 'commit', name: 'Commit', color: 'var(--series-3)', w: 1.5, dash: '2 3' },
   ];
   function drawBacktest() {
@@ -302,7 +340,7 @@ const DATA = /*__DATA__*/null;
   }
 
   // ---- Accuracy bars
-  const names = { commit: 'Commit', best_case: 'Best case', weighted: 'Weighted', model: 'Model' };
+  const names = { commit: 'Commit', best_case: 'Best case', weighted: 'Weighted', model: 'Model', capacity: 'Capacity' };
   const acc = Object.keys(names).map((k) => {
     const e = DATA.backtest.map((r) => r[k + '_error']);
     return { k, miss: e.reduce((a, b) => a + Math.abs(b), 0) / e.length, bias: e.reduce((a, b) => a + b, 0) / e.length };
@@ -318,7 +356,8 @@ const DATA = /*__DATA__*/null;
   });
   const best = acc[0];
   $('#accNote').textContent = `${names[best.k]} was closest, off by ${pct(best.miss)} on average and leaning ${best.bias < 0 ? 'low' : 'high'} by ${pct(Math.abs(best.bias))}. `
-    + `Commit misses by ${pct(acc.find((a) => a.k === 'commit').miss)} because about a third of each quarter's bookings come from deals that didn't exist when the quarter started.`;
+    + `Commit misses by ${pct(acc.find((a) => a.k === 'commit').miss)} because about a third of each quarter's bookings come from deals that didn't exist when the quarter started. `
+    + `Capacity misses by ${pct(acc.find((a) => a.k === 'capacity').miss)}: output per rep grew so fast that last quarter's pace was always out of date.`;
 
   // ---- Funnel
   DATA.funnel.forEach((f) => {
@@ -368,10 +407,82 @@ const DATA = /*__DATA__*/null;
     $('#stuck tbody').append(tr);
   });
 
+  // ---- Capacity table
+  const capRows = DATA.capacity;
+  const maxPer = Math.max(...capRows.map((r) => r.per_ae));
+  capRows.forEach((r, i) => {
+    const partial = i === capRows.length - 1;
+    const tr = el('tr'); const per = el('td', 'n'); const ib = el('span', 'inbar'); const b = el('i');
+    b.style.width = Math.max(2, 56 * r.per_ae / maxPer) + 'px'; if (partial) b.style.opacity = .4; ib.append(b, money(r.per_ae)); per.append(ib);
+    tr.append(el('td', null, qLabel(r.quarter) + (partial ? ' (so far)' : '')), el('td', 'n', r.effective_aes.toFixed(1)), el('td', 'n hide-sm', r.effective_sdrs.toFixed(1)), el('td', 'n', money(r.bookings)), per);
+    $('#cap tbody').append(tr);
+  });
+  const full = capRows.slice(0, -1), a = full[full.length - 1], y = full[full.length - 5];
+  $('#capNote').textContent = `Output per AE went from ${money(y.per_ae)} to ${money(a.per_ae)} a quarter over the last year while AE headcount fell from ${y.effective_aes.toFixed(0)} to ${a.effective_aes.toFixed(0)}. `
+    + `The growth came from more pipeline: since early 2025, effective SDRs went from ${capRows[0].effective_sdrs.toFixed(0)} to ${a.effective_sdrs.toFixed(0)} and each one sourced more.`;
+
+  // ---- Win rate by segment
+  const SEGS = [['SMB', 'var(--seg-smb)'], ['Mid-Market', 'var(--seg-mm)'], ['Enterprise', 'var(--seg-ent)']];
+  function drawWinRate() {
+    const box = $('#wrChart'); box.replaceChildren();
+    const qs = [...new Set(DATA.winRateSeg.map((r) => r.quarter))];
+    const W = Math.max(300, box.clientWidth), H = 230, m = { t: 12, r: 84, b: 28, l: 40 };
+    const X = (i) => m.l + i * (W - m.l - m.r) / (qs.length - 1);
+    const Y = (v) => H - m.b - v * (H - m.t - m.b) / 0.6;
+    const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', role: 'img', 'aria-label': 'Win rate by segment by quarter' });
+    for (let v = 0; v <= 0.6001; v += 0.2) {
+      svg.append(sv('line', { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), class: 'grid' }));
+      const tx = sv('text', { x: m.l - 8, y: Y(v) + 4, 'text-anchor': 'end' }); tx.textContent = pct(v); svg.append(tx);
+    }
+    qs.forEach((q, i) => { const tx = sv('text', { x: X(i), y: H - 8, 'text-anchor': 'middle' }); tx.textContent = qLabel(q.replace('-', '')).replace(' 20', " '"); svg.append(tx); });
+    const ends = [];
+    SEGS.forEach(([seg, color]) => {
+      const pts = qs.map((q, i) => { const r = DATA.winRateSeg.find((d) => d.quarter === q && d.segment === seg); return r ? [X(i), Y(r.win_rate), r] : null; }).filter(Boolean);
+      svg.append(sv('path', { d: pts.map((p, i) => `${i ? 'L' : 'M'}${p[0]},${p[1]}`).join(''), fill: 'none', stroke: color, 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+      pts.forEach(([x, y2, r]) => {
+        const c = sv('circle', { cx: x, cy: y2, r: 3.5, fill: color, stroke: 'var(--panel)', 'stroke-width': 2 });
+        const hit = sv('circle', { cx: x, cy: y2, r: 10, class: 'hit' });
+        hit.addEventListener('mousemove', (e) => showTip(e, `${seg} · ${qLabel(r.quarter.replace('-', ''))}`, [['Win rate', pct(r.win_rate, 1), color], ['Closed deals', fmt.format(r.closed_deals)]]));
+        hit.addEventListener('mouseleave', hideTip);
+        svg.append(c, hit);
+      });
+      const last = pts[pts.length - 1]; ends.push({ seg, color, y: last[1], v: last[2].win_rate });
+    });
+    ends.sort((p, q) => p.y - q.y);
+    for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
+    ends.forEach((e) => { const tx = sv('text', { x: W - m.r + 8, y: e.y + 4 }); tx.textContent = `${e.seg} ${pct(e.v)}`; tx.style.fill = e.color; svg.append(tx); });
+    box.append(svg);
+  }
+
+  // ---- Conversion
+  const pc = Object.fromEntries(DATA.pipelineConv.map((r) => [r.quarter, r]));
+  DATA.leadConv.forEach((r) => {
+    const p = pc[r.quarter];
+    const row = el('div', 'hrow'); const tr = el('div', 'htrack'); tr.style.flexDirection = 'column'; tr.style.height = '18px'; tr.style.background = 'none'; tr.style.gap = '3px';
+    const mkbar = (v, c) => { const wrap = el('div'); wrap.style.cssText = 'height:7px;border-radius:4px;background:var(--panel-2);'; const b = el('i'); b.style.cssText = `display:block;height:100%;border-radius:4px;width:${(100 * v / 0.4).toFixed(1)}%;background:${c}`; wrap.append(b); return wrap; };
+    tr.append(mkbar(r.conversion, 'var(--accent)'), mkbar(p && p.dollar_win_rate || 0, 'var(--seg-mm)'));
+    row.append(el('span', null, qLabel(r.quarter.replace('-', ''))), tr, el('span', 'val', `${pct(r.conversion)} · ${p && p.dollar_win_rate != null ? pct(p.dollar_win_rate) : '—'}`));
+    row.addEventListener('mousemove', (e) => showTip(e, qLabel(r.quarter.replace('-', '')), [['Leads', fmt.format(r.leads)], ['Converted', `${fmt.format(r.converted)} (${pct(r.conversion, 1)})`, 'var(--accent)'],
+      ['Pipeline created', p ? money(p.created) : '—'], ['Won of closed $', p && p.dollar_win_rate != null ? pct(p.dollar_win_rate, 1) : '—', 'var(--seg-mm)'], ['Still open', p ? money(p.still_open) : '—']]));
+    row.addEventListener('mouseleave', hideTip);
+    $('#convBars').append(row);
+  });
+
+  // ---- Rep scorecard
+  const segOrder = { SMB: 0, 'Mid-Market': 1, Enterprise: 2 };
+  [...DATA.scorecard].sort((a, b) => segOrder[a.segment] - segOrder[b.segment] || b.win_rate - a.win_rate).forEach((r) => {
+    const tr = el('tr'); const nm = el('td');
+    const sw = el('span', 'sw'); sw.style.cssText = `background:${SEGS.find((s) => s[0] === r.segment)[1]};margin-right:8px;width:8px;height:8px`;
+    nm.append(sw, r.name); if (!r.is_active) nm.append(el('span', 'left-tag', 'left'));
+    const wr = el('td', 'n'); const ib = el('span', 'inbar'); const b = el('i'); b.style.width = (r.win_rate * 80) + 'px'; ib.append(b, pct(r.win_rate)); wr.append(ib);
+    tr.append(nm, el('td', 'n', fmt.format(r.closed_deals)), wr, el('td', 'n', money(r.bookings)), el('td', 'n hide-sm', money(r.avg_won_deal)), el('td', 'n hide-sm', String(r.avg_days_to_win)));
+    $('#score tbody').append(tr);
+  });
+
   $('#foot').textContent = `Back-tested on ${DATA.backtest.length} quarters (${qLabel(DATA.backtest[0].quarter)} to ${qLabel(DATA.backtest[DATA.backtest.length - 1].quarter)}). `
     + `Each back-test forecast uses only what was known on the quarter's first day.`;
 
-  drawBacktest();
-  let w = innerWidth; addEventListener('resize', () => { if (innerWidth !== w) { w = innerWidth; drawBacktest(); } });
+  drawBacktest(); drawWinRate();
+  let w = innerWidth; addEventListener('resize', () => { if (innerWidth !== w) { w = innerWidth; drawBacktest(); drawWinRate(); } });
 })();
 </script>

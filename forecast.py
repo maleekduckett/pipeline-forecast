@@ -5,6 +5,7 @@ Deals whose close date has already passed are left out of every method and repor
   Commit       deals in Contract Review (what reps would call)
   Best case    Commit plus Proposal Sent and Negotiation
   Weighted     every deal times a textbook stage weight
+  Capacity     effective AE headcount times recent bookings per ramped AE (top-down, ignores pipeline)
   Model        every deal times the win rate its stage and segment have earned so far,
                cut for deals that slip past the quarter, plus the deals that get created
                and won inside the quarter (which no pipeline snapshot can see)
@@ -16,9 +17,10 @@ import argparse
 
 import pandas as pd
 
+from capacity import capacity_forecast
 from common import AS_OF, CATEGORY, DEFAULT_DATA, ROOT, STAGE_WEIGHT, load, pipeline_as_of, quarter_bounds
 
-METHODS = ["commit", "best_case", "weighted", "model"]
+METHODS = ["commit", "best_case", "weighted", "model", "capacity"]
 
 
 def stage_win_rates(t: dict, day: pd.Timestamp) -> tuple[pd.DataFrame, float]:
@@ -83,6 +85,7 @@ def forecast(t: dict, q: pd.Period, day: pd.Timestamp, use_original_close: bool)
         "weighted": won_so_far + float((inq.amount * inq.stage_then.map(STAGE_WEIGHT)).sum()),
         "model": won_so_far + float((inq.amount * p).sum()) * on_time_rate(t, day) + runrate * left,
         "model_new_deals": runrate * left,
+        "capacity": capacity_forecast(t, q, day),
     }
 
 

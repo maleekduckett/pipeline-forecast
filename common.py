@@ -33,6 +33,8 @@ THRESHOLDS = {
     "slipped": (0.25, 0.40),           # share of open deals pushed at least once
     "concentration": (0.35, 0.50),     # top 5 deals' share of this quarter's pipeline
     "win_rate": (-0.03, -0.07),        # change in win rate, last 2 quarters vs the 2 before
+    "capacity": (-0.05, -0.15),        # change in effective AEs vs the same quarter last year
+    "lead_conversion": (-0.01, -0.03), # change in lead conversion, last 2 quarters vs the 2 before
 }
 
 
@@ -43,7 +45,8 @@ def load(data_dir: Path | str = DEFAULT_DATA) -> dict[str, pd.DataFrame]:
     o["segment"] = o.account_id.map(pd.read_csv(d / "accounts.csv").set_index("account_id").segment)
     h = pd.read_csv(d / "opportunity_stage_history.csv", parse_dates=["entered_date"])
     u = pd.read_csv(d / "users.csv", parse_dates=["hire_date", "termination_date"])
-    return {"opps": o, "history": h, "users": u}
+    leads = pd.read_csv(d / "leads.csv", parse_dates=["created_date", "converted_date"])
+    return {"opps": o, "history": h, "users": u, "leads": leads}
 
 
 def quarter_bounds(q: pd.Period) -> tuple[pd.Timestamp, pd.Timestamp]:

@@ -22,8 +22,13 @@ def run_queries(data_dir=DEFAULT_DATA) -> dict[str, pd.DataFrame]:
     h = t["history"].copy()
     h["entered_date"] = h.entered_date.dt.strftime("%Y-%m-%d")
     h.to_sql("history", con, index=False)
+    leads = t["leads"][["lead_id", "created_date", "status"]].copy()
+    leads["created_date"] = leads.created_date.dt.strftime("%Y-%m-%d")
+    leads.to_sql("leads", con, index=False)
+    t["users"][["user_id", "name", "role", "segment", "is_active"]].to_sql("users", con, index=False)
     start, end = quarter_bounds(AS_OF.to_period("Q"))
-    params = {"q_start": start.strftime("%Y-%m-%d"), "q_end": end.strftime("%Y-%m-%d")}
+    params = {"q_start": start.strftime("%Y-%m-%d"), "q_end": end.strftime("%Y-%m-%d"),
+              "year_start": quarter_bounds(AS_OF.to_period("Q") - 4)[0].strftime("%Y-%m-%d")}
 
     out, name, lines = {}, None, []
     for line in (ROOT / "sql" / "report.sql").read_text().splitlines() + ["-- name: end"]:
